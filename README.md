@@ -27,7 +27,7 @@ The **Obsidian Idea Portal** allows you to quickly capture ideas directly into a
 
 <div align="center">
     <a href="https://github.com/scottgriv/Obsidian-Idea-Portal" target="_blank">
-        <img src="./docs/images/demo.png" style="width: 50%;"/>
+        <img src="./docs/images/demo.png" style="width: 75%;"/>
     </a>
     <br>
     <i>Application Preview</i>
@@ -35,7 +35,7 @@ The **Obsidian Idea Portal** allows you to quickly capture ideas directly into a
 <br />
 <div align="center">
     <a href="https://github.com/scottgriv/Obsidian-Idea-Portal" target="_blank">
-        <img src="./docs/images/demo-2.png" style="width: 50%;"/>
+        <img src="./docs/images/demo-2.png" style="width: 75%;"/>
     </a>
     <br>
     <i>Markdown Output</i>
