@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Obsidian Idea Portal</title>
+    <link
+      rel="icon"
+      type="image/png"
+      href="/images/favicon/favicon-96x96.png"
+      sizes="96x96"
+    />
+    <link rel="icon" type="image/svg+xml" href="/images/favicon/favicon.svg" />
+    <link rel="shortcut icon" href="/images/favicon/favicon.ico" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/images/favicon/apple-touch-icon.png"
+    />
+    <link rel="manifest" href="/images/favicon/site.webmanifest" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        background: #111827;
+        color: #e5e7eb;
+        display: flex;
+        justify-content: center;
+        padding: 2rem 1rem;
+      }
+      .container {
+        width: 100%;
+        max-width: 600px;
+        background: #020617;
+        border-radius: 0.75rem;
+        padding: 1.75rem;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+        border: 1px solid #1f2937;
+      }
+
+      /* --- Header layout --- */
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 1.25rem;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .app-logo {
+        width: 36px;
+        height: 36px;
+      }
+
+      .obsidian-integration {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.8rem;
+        color: #9ca3af;
+        white-space: nowrap;
+      }
+
+      .obsidian-logo {
+        width: 20px;
+        height: 24px;
+      }
+
+      body,
+      input,
+      textarea,
+      button,
+      label,
+      h1,
+      .subtitle,
+      .status,
+      .hint {
+        font-family: "JetBrains Mono", "Fira Code", "SF Mono", Menlo, Consolas,
+          monospace !important;
+      }
+
+      /* Placeholder text uses a special selector */
+      input::placeholder,
+      textarea::placeholder {
+        font-family: "JetBrains Mono", "Fira Code", "SF Mono", Menlo, Consolas,
+          monospace !important;
+        color: #6b7280; /* keep your current placeholder color */
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 1.4rem;
+      }
+      .subtitle {
+        font-size: 0.9rem;
+        color: #9ca3af;
+        margin-bottom: 1.5rem;
+      }
+      label {
+        display: block;
+        font-size: 0.85rem;
+        margin-bottom: 0.25rem;
+        color: #d1d5db;
+      }
+      input[type="text"],
+      textarea {
+        width: 100%;
+        border-radius: 0.5rem;
+        border: 1px solid #374151;
+        background: #020617;
+        color: #e5e7eb;
+        padding: 0.5rem 0.75rem;
+        font-size: 0.95rem;
+        box-sizing: border-box;
+      }
+      textarea {
+        min-height: 140px;
+        resize: vertical;
+      }
+      .field {
+        margin-bottom: 1rem;
+      }
+      .row {
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+      }
+      button {
+        border-radius: 999px;
+        border: none;
+        padding: 0.6rem 1.1rem;
+        font-size: 0.9rem;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+      .btn-primary {
+        background: #22c55e;
+        color: #022c22;
+        font-weight: 600;
+      }
+      .btn-secondary {
+        background: #111827;
+        color: #e5e7eb;
+        border: 1px solid #374151;
+      }
+      .status {
+        font-size: 0.85rem;
+        color: #9ca3af;
+        margin-top: 0.5rem;
+        min-height: 1.2em;
+      }
+      .status.ok {
+        color: #4ade80;
+      }
+      .status.error {
+        color: #f97373;
+      }
+      .hint {
+        font-size: 0.8rem;
+        color: #6b7280;
+        margin-top: 0.25rem;
+      }
+
+      .link-button {
+        background: none;
+        border: none;
+        padding: 0;
+        margin-top: -0.25rem;
+        font-size: 0.78rem;
+        color: #9ca3af;
+        text-decoration: underline;
+        cursor: pointer;
+        display: none; /* shown only when a folder is selected/restored */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header with logos -->
+      <div class="header">
+        <div class="brand">
+          <img src="images/idea_logo.png" alt="Idea logo" class="app-logo" />
+          <div>
+            <h1>Obsidian Idea Portal</h1>
+          </div>
+        </div>
+        <div class="obsidian-integration">
+          <span>Syncs with</span>
+          <img
+            src="images/obsidian_logo.png"
+            alt="Obsidian logo"
+            class="obsidian-logo"
+          />
+        </div>
+      </div>
+
+      <div class="subtitle">
+        Type an idea → instantly saved as a Markdown note in your chosen folder.
+      </div>
+
+      <div class="field">
+        <label>Target folder</label>
+        <div class="row">
+          <button id="chooseFolderBtn" class="btn-secondary" type="button">
+            📁 Choose Obsidian folder
+          </button>
+          <span id="folderStatus" class="status"></span>
+        </div>
+        <button id="changeFolderBtn" type="button" class="link-button">
+          Change folder
+        </button>
+        <div class="hint">
+          Pick a folder inside your Obsidian vault (e.g. <code>Your Vault/Ideas</code>).
+          You usually only need to do this once per browser.
+        </div>
+      </div>
+
+      <form id="ideaForm">
+        <div class="field">
+          <label for="title">Idea title</label>
+          <input
+            type="text"
+            id="title"
+            placeholder="e.g. Document tagging system, new app concept..."
+          />
+        </div>
+
+        <div class="field">
+          <label for="idea">Idea details</label>
+          <textarea id="idea" placeholder="Dump the idea details here..."></textarea>
+        </div>
+
+        <div class="row">
+          <button class="btn-primary" type="submit">
+            ➕ Create Markdown Note
+          </button>
+          <span id="saveStatus" class="status"></span>
+        </div>
+        <div class="hint">
+          Each idea becomes <code>title-slug.md</code> in your chosen folder.
+        </div>
+      </form>
+    </div>
+
+    <script>
+      let directoryHandle = null;
+      let storedDirectoryHandle = null; // handle loaded from IndexedDB
+
+      const chooseFolderBtn = document.getElementById("chooseFolderBtn");
+      const changeFolderBtn = document.getElementById("changeFolderBtn");
+      const folderStatus = document.getElementById("folderStatus");
+      const saveStatus = document.getElementById("saveStatus");
+      const ideaForm = document.getElementById("ideaForm");
+      const titleInput = document.getElementById("title");
+      const ideaInput = document.getElementById("idea");
+
+      // ---------- IndexedDB helpers for persisting the handle ----------
+
+      const DB_NAME = "obsidian-idea-portal";
+      const STORE_NAME = "handles";
+      const KEY_DIRECTORY = "directory";
+
+      function openDB() {
+        return new Promise((resolve, reject) => {
+          const request = indexedDB.open(DB_NAME, 1);
+          request.onupgradeneeded = (event) => {
+            const db = event.target.result;
+            if (!db.objectStoreNames.contains(STORE_NAME)) {
+              db.createObjectStore(STORE_NAME);
+            }
+          };
+          request.onsuccess = () => resolve(request.result);
+          request.onerror = () => reject(request.error);
+        });
+      }
+
+      function isSafeFilename(text) {
+        // Invalid in macOS, Windows, Linux filenames
+        const forbidden = /[<>:"/\\|?*\x00-\x1F]/g;
+        return !forbidden.test(text);
+      }
+
+      async function saveDirectoryHandle(handle) {
+        try {
+          const db = await openDB();
+          const tx = db.transaction(STORE_NAME, "readwrite");
+          tx.objectStore(STORE_NAME).put(handle, KEY_DIRECTORY);
+          storedDirectoryHandle = handle; // keep in memory too
+          return (
+            tx.complete ||
+            new Promise((resolve, reject) => {
+              tx.oncomplete = resolve;
+              tx.onerror = () => reject(tx.error);
+            })
+          );
+        } catch (e) {
+          console.error("Failed to save handle", e);
+        }
+      }
+
+      async function loadDirectoryHandle() {
+        try {
+          const db = await openDB();
+          const tx = db.transaction(STORE_NAME, "readonly");
+          const req = tx.objectStore(STORE_NAME).get(KEY_DIRECTORY);
+          return await new Promise((resolve, reject) => {
+            req.onsuccess = () => resolve(req.result || null);
+            req.onerror = () => reject(req.error);
+          });
+        } catch (e) {
+          console.error("Failed to load handle", e);
+          return null;
+        }
+      }
+
+      // ---------- Permission helper ----------
+
+      async function verifyPermission(handle, mode = "readwrite") {
+        if (!handle) return false;
+        const opts = { mode };
+        const state = await handle.queryPermission(opts);
+        if (state === "granted") return true;
+        // requestPermission MUST be called from a user gesture (click), so:
+        return false;
+      }
+
+      async function requestPermissionFromClick(handle, mode = "readwrite") {
+        if (!handle) return false;
+        const opts = { mode };
+        const result = await handle.requestPermission(opts);
+        return result === "granted";
+      }
+
+      // ---------- UI helpers ----------
+
+      function setFolderStatus(msg, ok = false, error = false) {
+        folderStatus.textContent = msg;
+        folderStatus.classList.remove("ok", "error");
+        if (ok) folderStatus.classList.add("ok");
+        if (error) folderStatus.classList.add("error");
+      }
+
+      function setSaveStatus(msg, ok = false, error = false) {
+        saveStatus.textContent = msg;
+        saveStatus.classList.remove("ok", "error");
+        if (ok) saveStatus.classList.add("ok");
+        if (error) saveStatus.classList.add("error");
+      }
+
+      function slugify(text) {
+        return (
+          text
+            .toLowerCase()
+            .replace(/[^a-z0-9\s-]/g, "")
+            .trim()
+            .replace(/\s+/g, "-")
+            .slice(0, 40) || "idea"
+        );
+      }
+
+      function timestampForFilename() {
+        const d = new Date();
+        const pad = (n) => String(n).padStart(2, "0");
+        return (
+          d.getFullYear().toString() +
+          pad(d.getMonth() + 1) +
+          pad(d.getDate()) +
+          "-" +
+          pad(d.getHours()) +
+          pad(d.getMinutes()) +
+          pad(d.getSeconds())
+        );
+      }
+
+      function isoDate() {
+        return new Date().toISOString();
+      }
+
+      async function writeMarkdownFile(handle, filename, content) {
+        const fileHandle = await handle.getFileHandle(filename, {
+          create: true,
+        });
+        const writable = await fileHandle.createWritable();
+        await writable.write(content);
+        await writable.close();
+      }
+
+      function showChangeFolderLink(show) {
+        changeFolderBtn.style.display = show ? "inline" : "none";
+      }
+
+      function labelForHandle(handle) {
+        if (!handle) return "";
+        return handle.name;
+      }
+
+      // ---------- Try to restore saved folder on load ----------
+
+      async function initStoredFolder() {
+        if (!window.showDirectoryPicker || !("indexedDB" in window)) {
+          return;
+        }
+
+        storedDirectoryHandle = await loadDirectoryHandle();
+        if (!storedDirectoryHandle) return;
+
+        const hasPermission = await verifyPermission(
+          storedDirectoryHandle,
+          "readwrite"
+        );
+        const label = labelForHandle(storedDirectoryHandle);
+
+        if (hasPermission) {
+          directoryHandle = storedDirectoryHandle;
+          setFolderStatus(`Using: ${label}`, true, false);
+          showChangeFolderLink(true);
+        } else {
+          // We know which folder was used, but we can't auto-reconnect without a click
+          setFolderStatus(
+            `Previously used: ${label}. Click "Choose Obsidian folder" or "Change folder" to reconnect.`,
+            false,
+            false
+          );
+          showChangeFolderLink(true);
+        }
+      }
+
+      // Call as soon as script runs
+      initStoredFolder();
+
+      // ---------- Folder selection / change helpers ----------
+
+      async function pickNewFolder() {
+        if (!window.showDirectoryPicker) {
+          setFolderStatus(
+            "Your browser doesn't support directory access. Use Chrome or Edge.",
+            false,
+            true
+          );
+          return;
+        }
+
+        try {
+          const handle = await window.showDirectoryPicker();
+          const granted = await requestPermissionFromClick(handle, "readwrite");
+          if (!granted) {
+            setFolderStatus("Permission to access folder denied.", false, true);
+            return;
+          }
+
+          directoryHandle = handle;
+          const label = labelForHandle(directoryHandle);
+          setFolderStatus(`Using: ${label}`, true, false);
+          showChangeFolderLink(true);
+          await saveDirectoryHandle(handle);
+        } catch (err) {
+          if (err.name !== "AbortError") {
+            setFolderStatus("Failed to select folder.", false, true);
+            console.error(err);
+          }
+        }
+      }
+
+      // ---------- UI events ----------
+
+      // Both buttons can now pick a (new) folder
+      chooseFolderBtn.addEventListener("click", pickNewFolder);
+      changeFolderBtn.addEventListener("click", pickNewFolder);
+
+      ideaForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        setSaveStatus("");
+
+        if (!directoryHandle) {
+          setSaveStatus("Choose a target folder first.", false, true);
+          return;
+        }
+
+        const MAX_TITLE_LENGTH = 80;
+
+        const ideaText = ideaInput.value.trim();
+        const titleText = titleInput.value.trim();
+
+        // --- Required title ---
+        if (!titleText) {
+          setSaveStatus("Please enter a title for your idea.", false, true);
+          return;
+        }
+
+        // --- Max length for logical title ---
+        if (titleText.length > MAX_TITLE_LENGTH) {
+          setSaveStatus(
+            `Title must be ${MAX_TITLE_LENGTH} characters or fewer.`,
+            false,
+            true
+          );
+          return;
+        }
+
+        // --- Ensure filename-safe characters ---
+        if (!isSafeFilename(titleText)) {
+          setSaveStatus(
+            'Title contains characters not allowed in filenames: < > : " / \\ | ? *',
+            false,
+            true
+          );
+          return;
+        }
+
+        // --- Required idea text ---
+        if (!ideaText) {
+          setSaveStatus("Please enter the idea details.", false, true);
+          return;
+        }
+
+        // --- Generate safe slug for filename ---
+        const slug = slugify(titleText); // already trims and limits to 40 chars
+        const filename = `${slug}.md`;
+
+        const created = isoDate();
+
+        const content =
+          `---\n` +
+          `title: "${titleText.replace(/"/g, '\\"')}"\n` +
+          `created: ${created}\n` +
+          `source: Obsidian Idea Portal\n` +
+          `---\n\n` +
+          `${ideaText}\n`;
+
+        try {
+          const hasPermission = await verifyPermission(
+            directoryHandle,
+            "readwrite"
+          );
+          if (!hasPermission) {
+            setSaveStatus(
+              'Lost permission to folder. Click "Choose Obsidian folder" or "Change folder" to reconnect.',
+              false,
+              true
+            );
+            showChangeFolderLink(true);
+            return;
+          }
+
+          await writeMarkdownFile(directoryHandle, filename, content);
+          setSaveStatus(`Saved as ${filename}`, true, false);
+
+          ideaInput.value = "";
+          titleInput.value = "";
+        } catch (err) {
+          console.error(err);
+          setSaveStatus(
+            "Error saving file. Check console for details.",
+            false,
+            true
+          );
+        }
+      });
+    </script>
+  </body>
+</html>

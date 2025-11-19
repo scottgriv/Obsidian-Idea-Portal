@@ -12,9 +12,9 @@ This file is used to connect this repository to the **PRG** project categorizati
 
 ## Project Information
 
-**Repository Tier:** Optimized <br>
-**Technology:** Markdown, GitHub <br>
-**Category:** Public Template <br>
+**Repository Tier:** Bronze <br>
+**Technology:** Markdown, HTML, CSS, JavaSript <br>
+**Category:** Web Utility <br>
 **Order:** 4 <br>
 
 ## Parameters
