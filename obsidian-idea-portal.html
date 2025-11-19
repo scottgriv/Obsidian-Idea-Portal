@@ -245,7 +245,7 @@
           <span id="saveStatus" class="status"></span>
         </div>
         <div class="hint">
-          Each idea becomes <code>title-slug.md</code> in your chosen folder.
+          Each idea becomes <code>title-slug-date-time.md</code> in your chosen folder.
         </div>
       </form>
     </div>
@@ -523,7 +523,8 @@
 
         // --- Generate safe slug for filename ---
         const slug = slugify(titleText); // already trims and limits to 40 chars
-        const filename = `${slug}.md`;
+        const ts = timestampForFilename(); // YYYYMMDD-HHMMSS
+        const filename = `${slug}-${ts}.md`;
 
         const created = isoDate();
 
@@ -532,7 +533,7 @@
           `title: "${titleText.replace(/"/g, '\\"')}"\n` +
           `created: ${created}\n` +
           `source: Obsidian Idea Portal\n` +
-          `---\n\n` +
+          `---\n` +
           `${ideaText}\n`;
 
         try {

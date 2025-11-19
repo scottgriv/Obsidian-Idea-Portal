@@ -25,6 +25,22 @@
 
 The **Obsidian Idea Portal** allows you to quickly capture ideas directly into an Obsidian vault folder using the browser, the File System Access API, and a lightweight static HTML page.
 
+<div align="center">
+    <a href="https://github.com/scottgriv/Obsidian-Idea-Portal" target="_blank">
+        <img src="./docs/images/demo.png" style="width: 50%;"/>
+    </a>
+    <br>
+    <i>Application Preview</i>
+</div>
+<br />
+<div align="center">
+    <a href="https://github.com/scottgriv/Obsidian-Idea-Portal" target="_blank">
+        <img src="./docs/images/demo-2.png" style="width: 50%;"/>
+    </a>
+    <br>
+    <i>Markdown Output</i>
+</div>
+
 ---------------
 
 ## Table of Contents
