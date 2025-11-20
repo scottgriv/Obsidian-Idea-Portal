@@ -12,10 +12,10 @@ This file is used to connect this repository to the **PRG** project categorizati
 
 ## Project Information
 
-**Repository Tier:** Bronze <br>
+**Repository Tier:** Silver <br>
 **Technology:** Markdown, HTML, CSS, JavaSript <br>
 **Category:** Web Utility <br>
-**Order:** 4 <br>
+**Order:** 19 <br>
 
 ## Parameters
 
