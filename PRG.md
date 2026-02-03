@@ -13,7 +13,7 @@ This file is used to connect this repository to the **PRG** project categorizati
 ## Project Information
 
 **Repository Tier:** Silver <br>
-**Technology:** Markdown, HTML, CSS, JavaSript <br>
+**Technology:** Markdown, HTML, CSS, JavaScript <br>
 **Category:** Web Utility, Obsidian Notes <br>
 **Order:** 19 <br>
 
